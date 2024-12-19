@@ -1,6 +1,7 @@
 package com.project.library.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.library.model.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -30,6 +31,11 @@ public class LibrarianEntity {
     @OneToMany(mappedBy = "librarian")
     @JsonBackReference
     private List<StudentEntity> students;
+
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "librarian")
+    private List<CategoryEntity> categories;
 
     @Email
     @Column(unique = true)

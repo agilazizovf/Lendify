@@ -2,7 +2,7 @@ Library System:
 
 1) Librarian qeydiyyati(update, delete qaldi) +
 2) Student qeydiyyati(update, delete qaldi) +
-3) Category qeydiyyati
+3) Category qeydiyyati +
 4) Kitab qeydiyyati
 5) Borrow and return emeliyyatlari
 6) Her bir hissenin authority meselesini hell ele
