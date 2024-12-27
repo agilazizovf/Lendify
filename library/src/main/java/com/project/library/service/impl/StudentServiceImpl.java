@@ -46,8 +46,14 @@ public class StudentServiceImpl implements StudentService {
         UserEntity registeredByLibrarian = getCurrentUser();
 
         UserEntity userAsStudent = new UserEntity(request.getUsername(), passwordEncoder.encode(request.getPassword()));
-        AuthorityEntity authority = new AuthorityEntity("STUDENT");
-        Set<AuthorityEntity> authorityEntitySet = Set.of(authority);
+        Set<AuthorityEntity> authorityEntitySet = Set.of(
+                new AuthorityEntity("GET_ALL_BOOKS"),
+                new AuthorityEntity("FIND_BOOK"),
+                new AuthorityEntity("GET_ALL_CATEGORIES"),
+                new AuthorityEntity("FIND_CATEGORY"),
+                new AuthorityEntity("BORROW_BOOK"),
+                new AuthorityEntity("RETURN_BOOK")
+        );
         userAsStudent.setAuthorities(authorityEntitySet);
 
         userRepository.save(userAsStudent);

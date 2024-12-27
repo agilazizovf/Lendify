@@ -33,8 +33,17 @@ public class LibrarianServiceImpl implements LibrarianService {
         }
 
         UserEntity user = new UserEntity(request.getUsername(), passwordEncoder.encode(request.getPassword()));
-        AuthorityEntity authority = new AuthorityEntity("LIBRARIAN");
-        Set<AuthorityEntity> authorityEntitySet = Set.of(authority);
+        Set<AuthorityEntity> authorityEntitySet = Set.of(
+                new AuthorityEntity("ADD_STUDENT"),
+                new AuthorityEntity("GET_ALL_STUDENTS"),
+                new AuthorityEntity("FIND_STUDENT"),
+                new AuthorityEntity("UPDATE_STUDENT"),
+                new AuthorityEntity("DELETE_STUDENT"),
+                new AuthorityEntity("GET_ALL_BOOKS"),
+                new AuthorityEntity("FIND_BOOK"),
+                new AuthorityEntity("GET_ALL_CATEGORIES"),
+                new AuthorityEntity("FIND_CATEGORY")
+        );
         user.setAuthorities(authorityEntitySet);
 
         userRepository.save(user);

@@ -51,6 +51,4 @@ public class StudentRequest {
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate birthday;
-    private LocalDateTime registerDate;
-    private LocalDateTime updateDate;
 }

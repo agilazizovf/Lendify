@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
@@ -43,6 +45,9 @@ public class StudentEntity {
     @JoinColumn(name = "registered_by_librarian_id")
     @JsonBackReference
     private LibrarianEntity librarian;
+
+    @OneToMany(mappedBy = "student")
+    private List<BorrowedBookEntity> borrowedBooks = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)

@@ -37,6 +37,12 @@ public class LibrarianEntity {
     @OneToMany(mappedBy = "librarian")
     private List<CategoryEntity> categories;
 
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "librarian")
+    private List<BookEntity> books;
+
+
     @Email
     @Column(unique = true)
     private String email;

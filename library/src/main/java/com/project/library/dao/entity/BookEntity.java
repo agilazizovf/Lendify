@@ -1,19 +1,16 @@
 package com.project.library.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
-@Table(name = "categories")
+@Table(name = "books")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryEntity {
+public class BookEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +20,15 @@ public class CategoryEntity {
 
     private String description;
 
+    private String author;
+
+    private boolean isBorrowed;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
+
     @ManyToOne
     @JoinColumn(name = "librarian_id")
     private LibrarianEntity librarian;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "category")
-    private List<BookEntity> books;
 }
