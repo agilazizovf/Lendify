@@ -1,8 +1,8 @@
 Library System:
 
-1) Librarian qeydiyyati(update, delete qaldi) +
-2) Student qeydiyyati(update, delete qaldi) +
+1) Librarian qeydiyyati(update, delete qaldi elave ele) +
+2) Student qeydiyyati(update, delete qaldi elave ele) +
 3) Category qeydiyyati +
-4) Kitab qeydiyyati
-5) Borrow and return emeliyyatlari
-6) Her bir hissenin authority meselesini hell ele
+4) Kitab qeydiyyati +(test ele)
+5) Borrow and return emeliyyatlari +
+6) Her bir hissenin authority meselesini hell ele +

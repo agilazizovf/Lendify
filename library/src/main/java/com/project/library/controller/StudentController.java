@@ -2,6 +2,7 @@ package com.project.library.controller;
 
 import com.project.library.model.dto.request.LoginRequest;
 import com.project.library.model.dto.request.StudentRequest;
+import com.project.library.model.dto.request.StudentUpdateRequest;
 import com.project.library.model.dto.response.MessageResponse;
 import com.project.library.model.dto.response.PageResponse;
 import com.project.library.model.dto.response.StudentInfoResponse;
@@ -10,7 +11,6 @@ import com.project.library.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,5 +37,15 @@ public class StudentController {
     public PageResponse<StudentInfoResponse> findAllStudents(@RequestParam(defaultValue = "0") int page,
                                                              @RequestParam(defaultValue = "10") int size) {
         return studentService.findAllStudents(page, size);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<MessageResponse> update(@RequestBody @Valid StudentUpdateRequest request) {
+        return studentService.update(request);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteAccount() {
+        return studentService.deleteAccount();
     }
 }

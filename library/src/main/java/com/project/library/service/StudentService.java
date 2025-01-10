@@ -1,7 +1,9 @@
 package com.project.library.service;
 
 import com.project.library.dao.entity.UserEntity;
+import com.project.library.model.dto.request.LibrarianUpdateRequest;
 import com.project.library.model.dto.request.StudentRequest;
+import com.project.library.model.dto.request.StudentUpdateRequest;
 import com.project.library.model.dto.response.MessageResponse;
 import com.project.library.model.dto.response.PageResponse;
 import com.project.library.model.dto.response.StudentInfoResponse;
@@ -11,5 +13,7 @@ public interface StudentService {
 
     ResponseEntity<MessageResponse> register(StudentRequest request);
     PageResponse<StudentInfoResponse> findAllStudents(int page, int size);
+    ResponseEntity<MessageResponse> update(StudentUpdateRequest request);
+    ResponseEntity<String> deleteAccount();
     UserEntity getCurrentUser();
 }

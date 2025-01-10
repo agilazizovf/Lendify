@@ -9,13 +9,16 @@ import com.project.library.dao.repository.StudentRepository;
 import com.project.library.dao.repository.UserRepository;
 import com.project.library.mapper.StudentMapper;
 import com.project.library.model.dto.request.StudentRequest;
+import com.project.library.model.dto.request.StudentUpdateRequest;
 import com.project.library.model.dto.response.MessageResponse;
 import com.project.library.model.dto.response.PageResponse;
 import com.project.library.model.dto.response.StudentInfoResponse;
 import com.project.library.model.enums.UserStatus;
+import com.project.library.model.exception.AlreadyExistsException;
 import com.project.library.model.exception.ResourceNotFoundException;
 import com.project.library.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +37,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StudentServiceImpl implements StudentService {
 
     private final UserRepository userRepository;
@@ -93,6 +97,51 @@ public class StudentServiceImpl implements StudentService {
         pageResponse.setFirst(studentEntities.isFirst());
 
         return pageResponse;
+    }
+
+    @Override
+    public ResponseEntity<MessageResponse> update(StudentUpdateRequest request) {
+        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        StudentEntity student = studentRepository.findByUsername(loggedInUsername)
+                .orElseThrow(() -> new IllegalArgumentException("Student not found with username: " + loggedInUsername));
+
+        studentRepository.findByUsername(request.getUsername()).ifPresent(existingAdmin -> {
+            if (!existingAdmin.getId().equals(student.getId())) {
+                throw new AlreadyExistsException("Username already exists: " + request.getUsername());
+            }
+        });
+
+        UserEntity user = student.getUser();
+        user.setUsername(request.getUsername());
+        userRepository.save(user);
+
+        modelMapper.map(request, student);
+        student.setUpdateDate(LocalDateTime.now());
+
+        studentRepository.save(student);
+
+        log.info("user: {} updated successfully", student.getUsername());
+
+        MessageResponse response = new MessageResponse(request.getUsername()+" updated successfully!");
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<String> deleteAccount() {
+        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        StudentEntity student = studentRepository.findByUsername(loggedInUsername)
+                .orElseThrow(() -> new IllegalArgumentException("Student not found with username: " + loggedInUsername));
+
+        userRepository.delete(student.getUser());
+
+        studentRepository.delete(student);
+
+        log.info("user: {} deleted successfully", student.getUsername());
+
+        return ResponseEntity.ok("Account successfully deleted and logged out.");
     }
 
     @Override

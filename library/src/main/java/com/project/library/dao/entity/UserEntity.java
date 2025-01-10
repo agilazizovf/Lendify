@@ -42,8 +42,6 @@ public class UserEntity {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     private Set<AuthorityEntity> authorities = new HashSet<>();
 
-
-
     public UserEntity(String username, String password) {
         this.username = username;
         this.password = password;
