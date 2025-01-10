@@ -30,21 +30,17 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
     @Override
     @Transactional
     public void initiatePasswordReset(String email) throws AuthenticationException {
-        UserEntity currentUser = userRepository.findByUsername(email)
+        UserEntity currentUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Admin not found with email: " + email));
 
         Optional<UserEntity> user = userRepository.findByUsername(currentUser.getUsername());
         if (user.isEmpty()) {
             throw new AuthenticationException("User not associated with client: " + email);
         }
-
-        // Delete any existing token for the user
         tokenRepository.deleteByUser_Username(user.get().getUsername());
 
-        // Generate and save a new token with expiration date
         String token = generateAndSaveActivationToken(currentUser.getUsername());
 
-        // Send the reset email
         sendResetEmail(currentUser.getUsername(), token);
     }
 
@@ -76,7 +72,6 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
         // Optionally, delete the token after use
         tokenRepository.deleteByToken(token);
     }
-
 
     private String generateAndSaveActivationToken(String email) {
         String generatedToken = generateActivationCode();
