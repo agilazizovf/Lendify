@@ -10,4 +10,6 @@ public class BookRequest {
     private String description;
 
     private String author;
+
+    private Long categoryId;
 }

@@ -18,10 +18,10 @@ public class BookController {
 
     private final BookService bookService;
 
-    @PostMapping("/create/{categoryId}")
+    @PostMapping("/create")
     // @PreAuthorize("hasAuthority('ADD_BOOK')")
-    public ResponseEntity<MessageResponse> create(@PathVariable Long categoryId, @RequestBody @Valid BookRequest request) {
-        return bookService.create(categoryId, request);
+    public ResponseEntity<MessageResponse> create(@RequestBody @Valid BookRequest request) {
+        return bookService.create(request);
     }
 
     @GetMapping("/get-all")
@@ -37,11 +37,11 @@ public class BookController {
         return bookService.findBookById(bookId);
     }
 
-    @PutMapping("/update/{categoryId}/{bookId}")
+    @PutMapping("/update/{bookId}")
     // @PreAuthorize("hasAuthority('UPDATE_BOOK')")
-    public ResponseEntity<MessageResponse> update(@PathVariable Long categoryId, @PathVariable Long bookId,
+    public ResponseEntity<MessageResponse> update(@PathVariable Long bookId,
                                                   @RequestBody @Valid BookRequest request) {
-        return bookService.update(categoryId, bookId, request);
+        return bookService.update(bookId, request);
     }
 
     @DeleteMapping("/delete/{bookId}")

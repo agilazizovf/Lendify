@@ -42,11 +42,11 @@ public class BookServiceImpl implements BookService {
     private final BorrowedBookRepository borrowedBookRepository;
 
     @Override
-    public ResponseEntity<MessageResponse> create(Long categoryId, BookRequest request) {
+    public ResponseEntity<MessageResponse> create(BookRequest request) {
         UserEntity user = getCurrentUser();
 
-        CategoryEntity category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: "+categoryId));
+        CategoryEntity category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: "+request.getCategoryId()));
 
         BookEntity book = new BookEntity();
         modelMapper.map(request, book);
@@ -99,11 +99,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseEntity<MessageResponse> update(Long findCategoryId, Long bookId, BookRequest request) {
+    public ResponseEntity<MessageResponse> update(Long bookId, BookRequest request) {
         UserEntity user = getCurrentUser();
 
-        CategoryEntity category = categoryRepository.findById(findCategoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: "+findCategoryId));
+        CategoryEntity category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: "+request.getCategoryId()));
         BookEntity book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with ID: "+bookId));
 

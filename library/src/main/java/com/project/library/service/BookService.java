@@ -9,10 +9,10 @@ import org.springframework.http.ResponseEntity;
 
 public interface BookService {
 
-    ResponseEntity<MessageResponse> create(Long categoryId, BookRequest request);
+    ResponseEntity<MessageResponse> create(BookRequest request);
     PageResponse<BookInfoResponse> findAllBooks(int page, int size);
     ResponseEntity<BookInfoResponse> findBookById(Long bookId);
-    ResponseEntity<MessageResponse> update(Long findCategoryId, Long bookId, BookRequest request);
+    ResponseEntity<MessageResponse> update(Long bookId, BookRequest request);
     void delete(Long bookId);
     ResponseEntity<MessageResponse> borrowBook(Long bookId);
     ResponseEntity<MessageResponse> returnBook(Long bookId);
