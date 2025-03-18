@@ -38,6 +38,7 @@ public class LibrarianServiceImpl implements LibrarianService {
         }
 
         UserEntity user = new UserEntity(request.getUsername(), passwordEncoder.encode(request.getPassword()));
+        user.setEmail(request.getEmail());
         Set<AuthorityEntity> authorityEntitySet = Set.of(
                 new AuthorityEntity("ADD_STUDENT"),
                 new AuthorityEntity("GET_ALL_STUDENTS"),
@@ -74,22 +75,16 @@ public class LibrarianServiceImpl implements LibrarianService {
         LibrarianEntity librarian = librarianRepository.findByUsername(loggedInUsername)
                 .orElseThrow(() -> new IllegalArgumentException("Librarian not found with username: " + loggedInUsername));
 
-        librarianRepository.findByUsername(request.getUsername()).ifPresent(existingAdmin -> {
-            if (!existingAdmin.getId().equals(librarian.getId())) {
-                throw new AlreadyExistsException("Username already exists: " + request.getUsername());
-            }
-        });
-
         UserEntity user = librarian.getUser();
-        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
         userRepository.save(user);
 
-        librarian.setUsername(request.getUsername());
+        librarian.setEmail(request.getEmail());
         librarian.setUpdateDate(LocalDateTime.now());
 
         librarianRepository.save(librarian);
 
-        MessageResponse response = new MessageResponse(request.getUsername()+" updated successfully!");
+        MessageResponse response = new MessageResponse(librarian.getUsername()+" updated successfully!");
 
         log.info("user: {} updated successfully", librarian.getUsername());
 

@@ -50,6 +50,7 @@ public class StudentServiceImpl implements StudentService {
         UserEntity registeredByLibrarian = getCurrentUser();
 
         UserEntity userAsStudent = new UserEntity(request.getUsername(), passwordEncoder.encode(request.getPassword()));
+        userAsStudent.setEmail(request.getEmail());
         Set<AuthorityEntity> authorityEntitySet = Set.of(
                 new AuthorityEntity("GET_ALL_BOOKS"),
                 new AuthorityEntity("FIND_BOOK"),
@@ -106,14 +107,9 @@ public class StudentServiceImpl implements StudentService {
         StudentEntity student = studentRepository.findByUsername(loggedInUsername)
                 .orElseThrow(() -> new IllegalArgumentException("Student not found with username: " + loggedInUsername));
 
-        studentRepository.findByUsername(request.getUsername()).ifPresent(existingAdmin -> {
-            if (!existingAdmin.getId().equals(student.getId())) {
-                throw new AlreadyExistsException("Username already exists: " + request.getUsername());
-            }
-        });
 
         UserEntity user = student.getUser();
-        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
         userRepository.save(user);
 
         modelMapper.map(request, student);
@@ -123,7 +119,7 @@ public class StudentServiceImpl implements StudentService {
 
         log.info("user: {} updated successfully", student.getUsername());
 
-        MessageResponse response = new MessageResponse(request.getUsername()+" updated successfully!");
+        MessageResponse response = new MessageResponse(student.getUsername()+" updated successfully!");
 
         return ResponseEntity.ok(response);
     }

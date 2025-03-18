@@ -26,6 +26,8 @@ public class UserEntity {
     @JsonIgnore
     private String password;
 
+    private String email;
+
     @JsonIgnore
     @OneToOne(mappedBy = "user")
     private LibrarianEntity librarian;
